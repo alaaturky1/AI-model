@@ -18,12 +18,6 @@ def create_app() -> FastAPI:
     app.include_router(rest_router)
     app.include_router(ws_router)
 
-    # Serve the zero-build frontend from /ui
-    app.mount("/ui", StaticFiles(directory="frontend", html=True), name="ui")
-
-    @app.get("/", include_in_schema=False)
-    def root() -> RedirectResponse:
-        return RedirectResponse(url="/ui")
 
     @app.exception_handler(RequestValidationError)
     async def validation_exception_handler(request: Request, exc: RequestValidationError) -> JSONResponse:
